@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:flutter_typeahead/src/material/field/text_field_configuration.dart';
 import 'package:flutter_typeahead/src/keyboard_suggestion_selection_notifier.dart';
-import 'package:flutter_typeahead/src/should_refresh_suggestion_focus_index_notifier.dart';
+import 'package:flutter_typeahead/src/material/field/text_field_configuration.dart';
 import 'package:flutter_typeahead/src/material/suggestions_box/suggestions_box.dart';
 import 'package:flutter_typeahead/src/material/suggestions_box/suggestions_box_controller.dart';
 import 'package:flutter_typeahead/src/material/suggestions_box/suggestions_box_decoration.dart';
 import 'package:flutter_typeahead/src/material/suggestions_box/suggestions_list.dart';
+import 'package:flutter_typeahead/src/should_refresh_suggestion_focus_index_notifier.dart';
 import 'package:flutter_typeahead/src/typedef.dart';
 import 'package:flutter_typeahead/src/utils.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -543,6 +543,8 @@ class TypeAheadField<T> extends StatefulWidget {
   // Adds a callback for the suggestion box opening or closing
   final void Function(bool)? onSuggestionsBoxToggle;
 
+  final EditableTextContextMenuBuilder? contextMenuBuilder;
+
   /// Creates a [TypeAheadField]
   const TypeAheadField({
     required this.suggestionsCallback,
@@ -580,6 +582,7 @@ class TypeAheadField<T> extends StatefulWidget {
     this.hideKeyboardOnDrag = false,
     this.ignoreAccessibleNavigation = false,
     super.key,
+    this.contextMenuBuilder,
   })  : assert(animationStart >= 0.0 && animationStart <= 1.0),
         assert(
             direction == AxisDirection.down || direction == AxisDirection.up),
@@ -887,6 +890,7 @@ class _TypeAheadFieldState<T> extends State<TypeAheadField<T>>
         child: TextField(
           focusNode: this._effectiveFocusNode,
           controller: this._effectiveController,
+          contextMenuBuilder: widget.contextMenuBuilder,
           decoration: widget.textFieldConfiguration.decoration,
           style: widget.textFieldConfiguration.style,
           textAlign: widget.textFieldConfiguration.textAlign,
